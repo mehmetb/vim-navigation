@@ -12,6 +12,11 @@ If you're using vim a lot, you might have tried scrolling down by pressing j or 
 
 Note that {i}gt works as vim's gt. So 2gt means "go to the second tab" (the first tab's index is 1)
 
+## Contributions
+
+- You can create issues.
+- Pull requests are welcome.
+
 ## Credits
 
 - I first forked [autonome](https://github.com/autonome)'s [vimkeybindings](https://github.com/autonome/vimkeybindings). In fact, I've even created a pull request. But then the code changed so much and I created this repo to maintain it.
