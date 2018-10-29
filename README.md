@@ -3,6 +3,10 @@
 
 If you're using vim a lot, you might have tried scrolling down by pressing j or switching to next tab by pressing gt. You are not alone :) 
 
+## Installation
+
+- [vim-navigations at Mozilla Add-ons](https://addons.mozilla.org/en-US/firefox/addon/vim-navigations/)
+
 ## Features
 
 - Supports h (left), j (bottom), k (up), l (right) navigations.
