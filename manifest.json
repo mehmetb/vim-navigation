@@ -22,7 +22,7 @@
   "incognito": "spanning",
   "manifest_version": 2,
   "name": "vim-navigations",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "options_ui": {
     "page": "options.html",
     "browser_style": true

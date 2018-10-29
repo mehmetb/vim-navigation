@@ -6,9 +6,11 @@ class VimNavigations {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.keyHistory = '';
     this.repetitionHistory = '';
+
+    //Default storage type
     this.storageType = 'sync';
     this.actions = new Actions(this);
-    this.reloadOptions();
+    this.initReloadStorage();
     this.bindStorageChangeListener();
   }
 
@@ -78,15 +80,20 @@ class VimNavigations {
     }
   }
 
-  async reloadOptions() {
+  async initReloadStorage() {
     try {
-      const localOptions = browser.storage.local.get(['horizontalScrollAmount', 'verticalScrollAmount']);
+      const localOptions = browser.storage.local.get(['horizontalScrollAmount', 'verticalScrollAmount', 'storageType']);
       const syncOptions = browser.storage.sync.get(['horizontalScrollAmount', 'verticalScrollAmount']);
       const results = await Promise.all([syncOptions, localOptions]);
       const defaultOptions = this.defaultOptions;
-      const options = { ...results[0], ...results[1] };
+      let options = { };
 
-      this.storageType = Object.keys(results[0]).length == 0 ? 'sync' : 'local';
+      if (Object.keys(results[1]).length && results[1].storageType == 'local') {
+        this.storageType = 'local';
+        options = { ...results[1] };
+      } else {
+        options = { ...results[0] };
+      }
 
       if (Object.keys(options).length == 0) {
         this.horizontalScrollAmount = defaultOptions.horizontalScrollAmount;
@@ -129,7 +136,24 @@ class VimNavigations {
     });
   }
 
+  async loadOptionsFromStorage(storageType) {
+    try {
+      const options = await browser.storage[storageType].get(['horizontalScrollAmount', 'verticalScrollAmount']);
+      const defaultOptions = this.defaultOptions;
+
+      if (Object.keys(options).length == 0) {
+        this.horizontalScrollAmount = defaultOptions.horizontalScrollAmount;
+        this.verticalScrollAmount = defaultOptions.verticalScrollAmount;
+      } else {
+        this.horizontalScrollAmount = options.horizontalScrollAmount;
+        this.verticalScrollAmount = options.verticalScrollAmount;
+      }
+    } catch (ex) {
+    }
+  }
+
   setStorageType(val) {
     this.storageType = val;
+    this.loadOptionsFromStorage(this.storageType);
   }
 }
