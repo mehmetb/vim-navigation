@@ -1,7 +1,7 @@
 # vim-navigations
 *A browser addon for vim-style navigations*
 
-If you're using vim a lot, you might have tried scrolling down by pressing j or switching to next tab by pressing gt. You are not alone :) 
+If you're using vim a lot, you might have accidentally pressed j or gt in your browser. You are not alone :) 
 
 ## Installation
 
