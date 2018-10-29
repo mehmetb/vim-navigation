@@ -37,6 +37,11 @@ class VimNavigations {
     this.repetitionHistory = '';
   }
 
+  /**
+   * Returns true if the target is a form element or it's contenteditable attribute is set
+   * @param {HTMLElement} target 
+   * @returns {boolean}
+   */
   isTextField(target) {
     const isContentEditable = target.getAttribute('contenteditable');
     const isFormElement = /input|textare|select/i.test(target.tagName);
@@ -62,6 +67,7 @@ class VimNavigations {
     const action = this.actions.getAction(this.keyHistory);
     
     if (action === null) {
+      //Reset history if the key history reached the longest key combination's length
       if (this.keyHistory.length >= this.actions.maxKeyCombinationLength) return this.resetHistory();
     } else {
       action(this.repetitionHistory);
