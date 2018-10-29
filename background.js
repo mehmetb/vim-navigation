@@ -27,11 +27,8 @@ async function activateTab(currentTab, commandRepetition, direction) {
     switch (direction) {
       case "next":
       //If no repetition, then we just want to navigate to the next tab
-      if (commandRepetition == "") {
+      if (commandRepetition == '' || commandRepetition == '0') {
         tabIndex = (index + 1) % tabCount;
-      } else if (commandRepetition == "0") {
-        //Some dev-minded person tried to navigate 0gt :)
-        tabIndex = 0;
       } else if (+commandRepetition <= tabCount) {
         //This is a special case: 5gt means "go to the 5th tab"
         //@see {@link http://vim.wikia.com/wiki/Using_tab_pages|Using tab pages} Navigation section
