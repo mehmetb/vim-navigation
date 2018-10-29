@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8"/>
+  </head>
+
+  <body>
+    <h1>Options</h1>
+    <table>
+      <tr>
+        <td>
+          <label for="verticalScrollAmount">Vertical scroll amount</label>
+        </td>
+        <td>
+          <input type="number" id="verticalScrollAmount" min="1" class="browser-style" /> lines
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label for="horizontalScrollAmount">Horizontal scroll amount</label>
+        </td>
+
+        <td>
+          <input type="number" id="horizontalScrollAmount" class="browser-style" min="1" /> pixels
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          Storage preference
+        </td>
+
+        <td>
+          <div class="browser-style">
+            <input type="radio" id="localStorage" name="storagePreference" />
+            <label for="localStorage">Local</label>
+
+            <input type="radio" checked="checked" id="syncStorage" name="storagePreference" />
+            <label for="syncStorage">Synced across all devices</label>
+          </div>
+
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="2">
+          <strong>Notes:</strong>
+
+          <ul>
+            <li>For sync to work Firefox must be logged in to your Firefox account on all your devices.</li>
+            <li>If you choose local storage the updates will be stored on your local device only (including the local storage option).</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="2">
+          <button type="button" id="btnUpdate" class="browser-style">Update</button>
+        </td>
+      </tr>
+    </table>
+    <script src="options.js"></script>
+  </body>
+</html>

@@ -22,5 +22,12 @@
   "incognito": "spanning",
   "manifest_version": 2,
   "name": "vim-navigations",
-  "version": "1.0.0"
+  "version": "1.1.0",
+  "options_ui": {
+    "page": "options.html",
+    "browser_style": true
+  },
+  "permissions": [
+    "storage"
+  ]
 }
