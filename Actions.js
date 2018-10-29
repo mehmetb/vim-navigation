@@ -1,10 +1,14 @@
 "use strict";
 
 class Actions {
+  /**
+   * @param {VimNavigations} vimNavigations VimNavigations instance
+   */
   constructor(vimNavigations) {
     this.vimNavigations = vimNavigations;
     this.validKeys = new Set();
     this.keyCombinations = [
+      //Arrow functions are necessary to bind the current context
       { keyCombination: 'l', action: (...args) => this.scrollRight(...args) },
       { keyCombination: 'j', action: (...args) => this.scrollDown(...args) },
       { keyCombination: 'h', action: (...args) => this.scrollLeft(...args) },
@@ -18,6 +22,10 @@ class Actions {
     this.populateValidKeys();
   }
 
+  /**
+   * Inspects all the key combinations and puts all the chars into the valid keys set.
+   * @method
+   */
   populateValidKeys() {
     for(let combinationObject of this.keyCombinations) {
       for (let i = 0; i < combinationObject.keyCombination.length; ++i) {
@@ -26,10 +34,20 @@ class Actions {
     }
   }
 
+  /**
+   * Checks if the given key is in the valid keys set.
+   * @param {string} key A single key (char)
+   * @returns {boolean}
+   */
   isValidKey(key) {
     return this.validKeys.has(key);
   }
 
+  /**
+   * Loops through all the available actions and returns the function if the key combination matches.
+   * @param {string} keyCombination Key combination 
+   * @returns {null|function}
+   */
   getAction(keyCombination) {
     for (let combinationObject of this.keyCombinations) {
       if (combinationObject.keyCombination == keyCombination) return combinationObject.action;
@@ -38,6 +56,11 @@ class Actions {
     return null;
   }
 
+  /**
+   * Converts the repetition.
+   * @param {string} repetition 
+   * @return {number}
+   */
   toNumber(repetition) {
     return repetition == "" ? 1 : +repetition;
   }

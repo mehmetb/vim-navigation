@@ -1,35 +1,38 @@
 "use strict";
 
 class VimNavigations {
-  constructor(options = {}) {
-    const DEFAULTS = {
-      scrollBy: {
-        vertical: 1,
-        horizontal: 10,
-      }
-    };
-
-    this.options = { ...DEFAULTS, ...options };
+  constructor() {
+    this.options = {};
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.keyHistory = '';
     this.repetitionHistory = '';
+    this.storageType = 'sync';
     this.actions = new Actions(this);
+    this.reloadOptions();
+    this.bindStorageChangeListener();
+  }
+
+  get defaultOptions() {
+    return {
+      verticalScrollAmount: 1,
+      horizontalScrollAmount: 10,
+    };
   }
 
   get verticalScrollAmount() {
-    return this.options.scrollBy.vertical;
+    return this.options.verticalScrollAmount;
   }
 
   set verticalScrollAmount(val) {
-    this.options.scrollBy.vertical = val;
+    this.options.verticalScrollAmount = val;
   }
 
   get horizontalScrollAmount() {
-    return this.options.scrollBy.horizontal;
+    return this.options.horizontalScrollAmount;
   }
 
   set horizontalScrollAmount(val) {
-    this.options.scrollBy.horizontal = val;
+    this.options.horizontalScrollAmount = val;
   }
 
   resetHistory() {
@@ -37,6 +40,11 @@ class VimNavigations {
     this.repetitionHistory = '';
   }
 
+  /**
+   * Returns true if the target is a form element or it's contenteditable attribute is set
+   * @param {HTMLElement} target 
+   * @returns {boolean}
+   */
   isTextField(target) {
     const isContentEditable = target.getAttribute('contenteditable');
     const isFormElement = /input|textare|select/i.test(target.tagName);
@@ -62,10 +70,66 @@ class VimNavigations {
     const action = this.actions.getAction(this.keyHistory);
     
     if (action === null) {
+      //Reset history if the key history reached the longest key combination's length
       if (this.keyHistory.length >= this.actions.maxKeyCombinationLength) return this.resetHistory();
     } else {
       action(this.repetitionHistory);
       this.resetHistory();
     }
+  }
+
+  async reloadOptions() {
+    try {
+      const localOptions = browser.storage.local.get(['horizontalScrollAmount', 'verticalScrollAmount']);
+      const syncOptions = browser.storage.sync.get(['horizontalScrollAmount', 'verticalScrollAmount']);
+      const results = await Promise.all([syncOptions, localOptions]);
+      const defaultOptions = this.defaultOptions;
+      const options = { ...results[0], ...results[1] };
+
+      this.storageType = Object.keys(results[0]).length == 0 ? 'sync' : 'local';
+
+      if (Object.keys(options).length == 0) {
+        this.horizontalScrollAmount = defaultOptions.horizontalScrollAmount;
+        this.verticalScrollAmount = defaultOptions.verticalScrollAmount;
+      } else {
+        this.horizontalScrollAmount = options.horizontalScrollAmount;
+        this.verticalScrollAmount = options.verticalScrollAmount;
+      }
+    } catch (ex) {
+      console.error('vim-navigations: Cannot acces storage area, using default options.');
+      this.horizontalScrollAmount = defaultOptions.horizontalScrollAmount;
+      this.verticalScrollAmount = defaultOptions.verticalScrollAmount;
+    }
+  }
+
+  bindStorageChangeListener() {
+    browser.storage.onChanged.addListener((changes, storageType) => {
+      if (this.storageType !== storageType) return;
+
+      const keys = Object.keys(changes);
+
+      for (let i = 0; i < keys.length; ++i) {
+        const key = keys[i];
+
+        if (changes[key].oldValue !== changes[key].newValue) {
+          switch (key) {
+            case 'verticalScrollAmount':
+              this.verticalScrollAmount = changes[key].newValue;
+              break;
+
+            case 'horizontalScrollAmount':
+              this.horizontalScrollAmount = changes[key].newValue;
+              break;
+
+            default:
+              break;
+          }
+        }
+      }
+    });
+  }
+
+  setStorageType(val) {
+    this.storageType = val;
   }
 }
