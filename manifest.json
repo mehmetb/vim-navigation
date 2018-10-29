@@ -1,0 +1,26 @@
+{
+  "applications": {
+    "gecko": {
+      "id": "vim-navigations@783c6550-0cc9-4c3f-855f-5ddbeae91ea3"
+    }
+
+  },
+  "author": "Mehmet Baker",
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["Actions.js", "VimNavigations.js", "content-script.js"],
+      "match_about_blank": true,
+      "run_at": "document_start"
+    }
+  ],
+  "description": "A browser extension for vim-style navigations",
+  "homepage_url": "https://github.com/mehmetb/vim-navigations",
+  "incognito": "spanning",
+  "manifest_version": 2,
+  "name": "vim-navigations",
+  "version": "1.0.0"
+}
