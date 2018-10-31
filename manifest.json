@@ -21,19 +21,19 @@
         "lib/EventEmitter.js",
         "lib/StorageController.js",
         "lib/Actions.js", 
-        "lib/VimNavigations.js", 
+        "lib/VimNavigation.js", 
         "content-script.js"
       ],
       "match_about_blank": true,
       "run_at": "document_start"
     }
   ],
-  "description": "A browser extension for vim-style navigations",
-  "homepage_url": "https://github.com/mehmetb/vim-navigations",
+  "description": "A browser add-on for vim-style scrolling and tab navigation",
+  "homepage_url": "https://github.com/mehmetb/vim-navigation",
   "incognito": "spanning",
   "manifest_version": 2,
-  "name": "vim-navigations",
-  "version": "1.3.0",
+  "name": "vim-navigation",
+  "version": "1.3.1",
   "options_ui": {
     "page": "options/index.html",
     "browser_style": true

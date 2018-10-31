@@ -1,5 +1,5 @@
 "use strict";
 
-const vimNavigations = new VimNavigations();
+const vimNavigation = new VimNavigation();
 
-document.addEventListener("keypress", vimNavigations.handleKeyPress, false);
+document.addEventListener("keypress", vimNavigation.handleKeyPress, false);
