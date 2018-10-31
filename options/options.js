@@ -13,7 +13,11 @@ async function init() {
     horizontalInput.value = options.horizontalScrollAmount;
 
     if (options.skipPinnedTabs === true) {
+      document.getElementById('skipNo').removeAttribute('checked');
       document.getElementById('skipYes').setAttribute('checked', 'checked');
+    } else {
+      document.getElementById('skipYes').removeAttribute('checked');
+      document.getElementById('skipNo').setAttribute('checked', 'checked');
     }
 
     switch (storageController.getStorageType()) {
