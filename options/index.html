@@ -27,6 +27,22 @@
       </tr>
 
       <tr>
+        <td>
+          Skip pinned tabs
+        </td>
+      
+        <td>
+          <div class="browser-style">
+            <input type="radio" id="skipYes" name="skipPinnedTabs" />
+            <label for="skipYes">Yes</label>
+
+            <input type="radio" checked="checked" id="skipNo" name="skipPinnedTabs" />
+            <label for="skipNo">No</label>
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
         <td colspan="2">
           <button type="button" id="btnUpdate" class="browser-style">Save</button>
         </td>
@@ -45,7 +61,6 @@
             <input type="radio" checked="checked" id="syncStorage" name="storagePreference" />
             <label for="syncStorage">Synced across all devices</label>
           </div>
-
         </td>
       </tr>
 
@@ -56,10 +71,14 @@
           <ul>
             <li>For sync to work Firefox must be logged in to your Firefox account on all your devices.</li>
             <li>If you choose local storage the updates will be stored on your local device only.</li>
+            <li>If you choose to skip pinned tabs they will be treated as if they don't exist.</li>
           </ul>
         </td>
       </tr>
     </table>
+    <script src="../lib/DEFAULTS.js"></script>
+    <script src="../lib/EventEmitter.js"></script>
+    <script src="../lib/StorageController.js"></script>
     <script src="options.js"></script>
   </body>
 </html>
