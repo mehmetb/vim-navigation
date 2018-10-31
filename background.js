@@ -1,4 +1,7 @@
-"use strict";
+'use strict';
+
+let { skipPinnedTabs } = DEFAULTS;
+const storageController = new StorageController();
 
 /**
  * Math modulo. Always returns a positive result
@@ -7,7 +10,11 @@
  * @returns {number}
  */
 function positiveModulo(number, modulosOf) {
-  return Math.abs(number % modulosOf);
+  const mod = number % modulosOf;
+
+  if (mod >= 0) return mod;
+
+  return mod + modulosOf;
 }
 
 /**
@@ -19,13 +26,23 @@ function positiveModulo(number, modulosOf) {
  */
 async function activateTab(currentTab, commandRepetition, direction) {
   try {
-    const { id, index, windowId } = currentTab;
-    const tabs = await browser.tabs.query({ windowId, hidden: false });
+    const { id, windowId } = currentTab;
+    let query = skipPinnedTabs ? { pinned: false } : {};
+    query = { ...query, windowId, hidden: false };
+    const tabs = await browser.tabs.query(query);
     const tabCount = tabs.length;
     let tabIndex = null;
+    let index;
+
+    for (let i = 0; i < tabs.length; ++i) {
+      if (tabs[i].id == id) {
+        index = i;
+        break;
+      }
+    }
 
     switch (direction) {
-      case "next":
+      case 'next':
       //If no repetition, then we just want to navigate to the next tab
       if (commandRepetition == '' || commandRepetition == '0') {
         tabIndex = (index + 1) % tabCount;
@@ -37,7 +54,7 @@ async function activateTab(currentTab, commandRepetition, direction) {
       }
       break;
 
-      case "prev":
+      case 'prev':
       tabIndex = positiveModulo(index - +commandRepetition, tabCount);
       break;
 
@@ -58,15 +75,32 @@ browser.runtime.onMessage.addListener((request, sender) => {
   const { command, repetition } = request.message;
 
   switch (command) {
-    case "activateNextTab":
-      activateTab(sender.tab, repetition, "next");
+    case 'activateNextTab':
+      activateTab(sender.tab, repetition, 'next');
       break;
   
-    case "activatePreviousTab":
-      activateTab(sender.tab, repetition, "prev");
+    case 'activatePreviousTab':
+      activateTab(sender.tab, repetition, 'prev');
       break;
   
     default:
       break;
+  }
+});
+
+storageController.on('onChange', changes => {
+  const keys = Object.keys(changes);
+
+  for (let key of keys) {
+    if (changes[key].oldValue === changes[key].newValue) continue;
+
+    switch (key) {
+      case 'skipPinnedTabs':
+        skipPinnedTabs = changes[key].newValue;
+        break;
+
+      default:
+        break;
+    }
   }
 });

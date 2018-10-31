@@ -6,7 +6,12 @@
   },
   "author": "Mehmet Baker",
   "background": {
-    "scripts": ["background.js"]
+    "scripts": [
+      "lib/DEFAULTS.js",
+      "lib/EventEmitter.js",
+      "lib/StorageController.js",
+      "background.js"
+    ]
   },
   "content_scripts": [
     {

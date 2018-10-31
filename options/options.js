@@ -12,6 +12,10 @@ async function init() {
     verticalInput.value = options.verticalScrollAmount;
     horizontalInput.value = options.horizontalScrollAmount;
 
+    if (options.skipPinnedTabs === true) {
+      document.getElementById('skipYes').setAttribute('checked', 'checked');
+    }
+
     switch (storageController.getStorageType()) {
       case 'local':
         localStorageRadio.setAttribute('checked', 'checked');
@@ -27,36 +31,27 @@ async function init() {
 }
 
 storageController.on('onChange', () => init());
-
-localStorageRadio.addEventListener('change', () => {
-  browser.storage.local.set({
-    'storageType': 'local',
-  });
-}, false);
-
-syncStorageRadio.addEventListener('change', () => {
-  browser.storage.local.set({
-    'storageType': 'sync',
-  });
-}, false);
+localStorageRadio.addEventListener('change', () => browser.storage.local.set({ storageType: 'local' }));
+syncStorageRadio.addEventListener('change', () => browser.storage.local.set({ storageType: 'sync' })); 
 
 updateButton.addEventListener('click', async () => {
   const storageType = localStorageRadio.checked ? 'local' : 'sync';
+  const skipPinnedTabs = document.getElementById('skipYes').checked === true;
 
   if (storageType == 'local') {
     browser.storage.local.set({
       'verticalScrollAmount': +verticalInput.value,
       'horizontalScrollAmount': +horizontalInput.value,
+      'skipPinnedTabs': skipPinnedTabs,
       'storageType': 'local',
     });
   } else {
     await browser.storage.sync.set({
       'verticalScrollAmount': +verticalInput.value,
       'horizontalScrollAmount': +horizontalInput.value,
+      'skipPinnedTabs': skipPinnedTabs,
     });
-    browser.storage.local.set({
-      'storageType': 'sync',
-    });
+    browser.storage.local.set({ storageType: 'sync' });
   }
 }, false);
 
