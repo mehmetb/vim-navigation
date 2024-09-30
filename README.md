@@ -9,17 +9,16 @@ If you're using vim a lot, you might have accidentally pressed j or gt in your b
 
 ## Features
 
-- Supports scrolling with h (left), j (bottom), k (up), l (right).
-- Supports gg (to top) and Shift+g (to bottom).
-- Supports gt (next tab) and gT (previous tab).
-- Supports command repetition as in vim. 100j will scroll down 100 lines.
+- Supports scrolling with <kbd>h</kbd> (left), <kbd>j</kbd> (bottom), <kbd>k</kbd> (up), <kbd>l</kbd> (right).
+- Supports <kbd>g</kbd><kbd>g</kbd> (to top) and <kbd>Shift</kbd>+<kbd>g</kbd> (to bottom).
+- Supports <kbd>g</kbd><kbd>t</kbd> (next tab) and <kbd>g</kbd><kbd>T</kbd> (previous tab).
+- Supports command repetition as in vim. `100j` will scroll down 100 lines.
 
-Note that {i}gt works as vim's gt. So 2gt means "go to the second tab" (the first tab's index is 1)
+Note that `{i}`<kbd>g</kbd><kbd>t</kbd> works as vim's `gt`. So <kbd>2</kbd><kbd>g</kbd><kbd>t</kbd> means "go to the second tab" (the first tab's index is 1)
 
 ## Contributions
 
-- You can create issues.
-- Pull requests are welcome.
+Issues and pull requests are welcome! 
 
 ## Credits
 
